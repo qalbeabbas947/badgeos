@@ -202,7 +202,7 @@ class BadgeOS {
 		
 		//actuall date earned field on all of the tables
 		$row = $wpdb->get_results(  "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '".$wpdb->prefix."badgeos_achievements' AND column_name = 'actual_date_earned'"  );
-        if(empty($row)){
+		if(empty($row)){
             $wpdb->query("ALTER TABLE ".$wpdb->prefix . "badgeos_achievements ADD actual_date_earned timestamp NULL DEFAULT NULL DEFAULT CURRENT_TIMESTAMP");
 		}
 		
@@ -256,7 +256,16 @@ class BadgeOS {
             $badgeos_settings['badgeos_rank_global_image_width']    		= '50';
             $badgeos_settings['badgeos_rank_global_image_height']    		= '50';
 			$badgeos_settings['badgeos_point_global_image_width']    		= '32';
-            $badgeos_settings['badgeos_point_global_image_height']    		= '32';
+			$badgeos_settings['badgeos_point_global_image_height']    		= '32';
+			
+			$badgeos_settings['ms_show_all_ranks']    		= 'disabled';
+			$badgeos_settings['ms_show_all_points']    		= 'disabled';
+			$badgeos_settings['ms_show_all_settings']    	= 'enabled';
+			$badgeos_settings['ms_show_all_achievements']   = 'disabled';
+			if( is_multisite() ) {
+				update_site_option( 'ms_show_all_settings', 'enabled' );
+				update_site_option( 'badgeos_settings', $badgeos_settings );
+			}
 			badgeos_utilities::update_option( 'badgeos_settings', $badgeos_settings );
 		}
 
@@ -625,7 +634,15 @@ class BadgeOS {
             $badgeos_settings['badgeos_achievement_global_image_height']    = '50';
             $badgeos_settings['badgeos_rank_global_image_width']    		= '50';
             $badgeos_settings['badgeos_rank_global_image_height']    		= '50';
-
+			
+			$badgeos_settings['ms_show_all_ranks']    		= 'disabled';
+			$badgeos_settings['ms_show_all_points']    		= 'disabled';
+			$badgeos_settings['ms_show_all_settings']    	= 'enabled';
+			$badgeos_settings['ms_show_all_achievements']   = 'disabled';
+			if( is_multisite() ) {
+				update_site_option( 'ms_show_all_settings', 'enabled' );
+				update_site_option( 'badgeos_settings', $badgeos_settings );
+			}
             badgeos_utilities::update_option( 'badgeos_settings', $badgeos_settings );
 		}
 

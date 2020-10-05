@@ -35,6 +35,28 @@ class badgeos_utilities {
     }
 
     /**
+     * Check if badgeos is network wide active
+     *
+     * @return bool
+     */
+    function get_network_ids() {
+
+        global $wpdb;
+        self::$instance = new self;
+        
+        if( self::$instance->is_network_wide_active() ) {
+            $blog_ids = $wpdb->get_results( "SELECT blog_id FROM " . $wpdb->base_prefix . "blogs" );
+            foreach ($blog_ids as $key => $value ) {
+                $sites[] = $value->blog_id;
+            }
+        } else {
+            $sites[] = get_current_blog_id();
+        }
+
+        return $sites;
+    }
+
+    /**
      * Helper function to get an option value.
      *
      * @param $option_name 
@@ -46,11 +68,38 @@ class badgeos_utilities {
 
         $settings = [];
         self::$instance = new self;
+
+        switch( $option_name ) {
+            // case "badgeos_settings":
+            //     if( is_multisite() ) {
+            //         $ms_show_all_settings = get_site_option( 'ms_show_all_settings' );
+            //         if( $ms_show_all_settings == 'enabled' ) {
+            //             $settings = get_site_option( 'badgeos_settings' );
+            //         } else {
+            //             $settings = get_option( 'badgeos_settings' );
+            //         }
+            //     } else {
+            //         $settings = get_option( $option_name );
+            //     }
+            //     // echo '<pre>';
+            //     // print_r($settings);
+            //     // echo '</pre>';
+            //     //update_site_option( 'ms_show_all_settings', $ms_show_all_settings );
+            //     break;
+            // case "badgeos_settings":
+
+            //     break;
+            default:
+                $settings = get_option( $option_name );
+                break;                
+        }
+        
+
         // if( self::$instance->is_network_wide_active() ) {
         //     echo 'hellow';
         //     $settings = get_site_option( $option_name );
         // } else {
-            $settings = get_option( $option_name );
+       $settings = get_option( $option_name );
         // }
 
         return $settings;

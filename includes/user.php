@@ -27,14 +27,17 @@ function badgeos_get_user_achievements( $args = array() ) {
 		'achievement_id'   => false, // A specific achievement's post ID
 		'achievement_type' => false, // A specific achievement type
 		'start_date' => false, // A specific achievement type
-		'end_date' => false, // A specific achievement type
+		'end_date' => false, // A specific achievement type 
 		'no_step' => false, // A specific achievement type
 		'since'            => 0,     // A specific timestamp to use in place of $limit_in_days
 		'pagination'	=> false,// if true the pagination will be applied
 		'limit'	=> 10,
 		'page'	=> 1,
+		'orderby' => 'entry_id',
+		'order' => 'ASC',
 		'total_only' => false
 	);
+
 	$args = wp_parse_args( $args, $defaults );
 
 	// Return our $achievements array_values (so our array keys start back at 0), or an empty array
@@ -107,7 +110,13 @@ function badgeos_get_user_achievements( $args = array() ) {
 				$paginate_str = ' limit '.$offset.', '.$args['limit'];
 			}
 			
-			$user_achievements = $wpdb->get_results( "SELECT * FROM $table_name WHERE $where".$paginate_str );
+			$order_str = '';
+			if( !empty( $args['orderby'] ) &&  !empty( $args['order'] ) ) {
+				$order_str = " ORDER BY ".$args['orderby']." ".$args['order'];
+			}
+			//echo "SELECT * FROM $table_name WHERE $where ".$order_str.' '.$paginate_str;
+			$user_achievements = $wpdb->get_results( "SELECT * FROM $table_name WHERE $where ".$order_str.' '.$paginate_str );
+			//print_r($user_achievements);
 		}
 
 		return $user_achievements;
@@ -683,7 +692,7 @@ function badgeos_profile_user_ranks( $user = null ) {
 			if( empty( $rank_types ) && $can_manage ) {
 				?>
 				<tr>
-					<td colspan="5">
+					<td colspan="6">
 						<span class="description">
 							<?php echo sprintf( __( 'No rank types configured, visit %s to configure some rank types.', 'badgeos' ), '<a href="' . admin_url( 'edit.php?post_type=rank-type' ) . '">' . __( 'this page', 'badgeos' ) . '</a>' ); ?>
 						</span>

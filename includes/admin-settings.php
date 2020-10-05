@@ -58,7 +58,18 @@ function badgeos_settings_validate( $input = '' ) {
 			$original_settings['minimum_role'] = isset( $input['minimum_role'] ) ? sanitize_text_field( $input['minimum_role'] ) : $original_settings['minimum_role'];
 			$original_settings['debug_mode'] = isset( $input['debug_mode'] ) ? sanitize_text_field( $input['debug_mode'] ) : $original_settings['debug_mode'];
 			$original_settings['log_entries'] = isset( $input['log_entries'] ) ? sanitize_text_field( $input['log_entries'] ) : $original_settings['log_entries'];
-			$original_settings['ms_show_all_achievements'] = isset( $input['ms_show_all_achievements'] ) ? sanitize_text_field( $input['ms_show_all_achievements'] ) : $original_settings['ms_show_all_achievements'];
+			if ( is_multisite() ) { 
+				if( is_super_admin() ) {
+					$original_settings['ms_show_all_achievements'] = isset( $input['ms_show_all_achievements'] ) ? sanitize_text_field( $input['ms_show_all_achievements'] ) : $original_settings['ms_show_all_achievements'];
+					$original_settings['ms_show_all_ranks'] = isset( $input['ms_show_all_ranks'] ) ? sanitize_text_field( $input['ms_show_all_ranks'] ) : $original_settings['ms_show_all_ranks'];
+					$original_settings['ms_show_all_points'] = isset( $input['ms_show_all_points'] ) ? sanitize_text_field( $input['ms_show_all_points'] ) : $original_settings['ms_show_all_points'];
+					
+					$ms_show_all_settings = isset( $input['ms_show_all_settings'] ) ? sanitize_text_field( $input['ms_show_all_settings'] ) : $original_settings['ms_show_all_settings'];
+					$original_settings['ms_show_all_points'] = $ms_show_all_settings;
+					update_site_option( 'ms_show_all_settings', $ms_show_all_settings );
+				}
+			}
+			
 			$original_settings['remove_data_on_uninstall'] = ( isset( $input['remove_data_on_uninstall'] ) && "on" == $input['remove_data_on_uninstall'] ) ? "on" : null;
 			$original_settings['achievement_list_shortcode_default_view'] = isset( $input['achievement_list_shortcode_default_view'] ) ? sanitize_text_field( $input['achievement_list_shortcode_default_view'] ) : $original_settings['achievement_list_shortcode_default_view'];
 			$original_settings['earned_achievements_shortcode_default_view'] = isset( $input['earned_achievements_shortcode_default_view'] ) ? sanitize_text_field( $input['earned_achievements_shortcode_default_view'] ) : $original_settings['earned_achievements_shortcode_default_view'];
@@ -153,6 +164,8 @@ function badgeos_settings_validate( $input = '' ) {
 
 	
 	$original_settings = apply_filters( "badgeos_validate_setting_page_data", $original_settings, $input );
+
+	
 	// Sanitize the settings data submitted
 	return $original_settings;
 }

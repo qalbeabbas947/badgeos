@@ -6,6 +6,10 @@
     $debug_mode = ( isset( $badgeos_settings['debug_mode'] ) ) ? $badgeos_settings['debug_mode'] : 'disabled';
     $log_entries = ( isset( $badgeos_settings['log_entries'] ) ) ? $badgeos_settings['log_entries'] : 'disabled';
     $ms_show_all_achievements = ( isset( $badgeos_settings['ms_show_all_achievements'] ) ) ? $badgeos_settings['ms_show_all_achievements'] : 'disabled';
+    $ms_show_all_ranks = ( isset( $badgeos_settings['ms_show_all_ranks'] ) ) ? $badgeos_settings['ms_show_all_ranks'] : 'disabled';
+    $ms_show_all_points = ( isset( $badgeos_settings['ms_show_all_points'] ) ) ? $badgeos_settings['ms_show_all_points'] : 'disabled';
+    $ms_show_all_settings = ( isset( $badgeos_settings['ms_show_all_settings'] ) ) ? $badgeos_settings['ms_show_all_settings'] : 'disabled';
+            
     $remove_data_on_uninstall = ( isset( $badgeos_settings['remove_data_on_uninstall'] ) ) ? $badgeos_settings['remove_data_on_uninstall'] : '';
     $badgeos_achievement_global_image_width 	= ( ! empty ( $badgeos_settings['badgeos_achievement_global_image_width'] ) ) ? $badgeos_settings['badgeos_achievement_global_image_width'] : '50';
     $badgeos_achievement_global_image_height = ( ! empty ( $badgeos_settings['badgeos_achievement_global_image_height'] ) ) ? $badgeos_settings['badgeos_achievement_global_image_height'] : '50';
@@ -47,7 +51,18 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-futbol-o" aria-hidden="true"></i>&nbsp;&nbsp;
                     <?php _e( 'Thumbnail Sizes', 'badgeos' ); ?>
                 </a>
-            </li>
+            </li> 
+            <?php 
+            if ( is_super_admin() ){
+                if ( is_multisite() ) { ?>
+                    <li>
+                        <a href="#badgeos_settings_multisite_settings">
+                            &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-empire" aria-hidden="true"></i>&nbsp;&nbsp;
+                            <?php _e( "Multisite", 'badgeos' ); ?>
+                        </a>
+                    </li>
+                <?php } ?>
+            <?php } ?>
             <?php if( ! empty( $addon_contents ) ) { ?>
                 <li>
                     <a href="#badgeos_settings_addon_settings">
@@ -109,22 +124,7 @@
                             </td>
                         </tr>
                     <?php } ?>
-                    <?php
-                    if ( is_super_admin() ){
-                        if ( is_multisite() ) {
-                        ?>
-                            <tr valign="top"><th scope="row"><label for="debug_mode"><?php _e( 'Show achievements earned across all sites on the network:', 'badgeos' ); ?></label></th>
-                                <td>
-                                    <select id="debug_mode" name="badgeos_settings[ms_show_all_achievements]">
-                                        <option value="disabled" <?php selected( $ms_show_all_achievements, 'disabled' ); ?>><?php _e( 'Disabled', 'badgeos' ) ?></option>
-                                        <option value="enabled" <?php selected( $ms_show_all_achievements, 'enabled' ); ?>><?php _e( 'Enabled', 'badgeos' ) ?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                        <?php
-                        }
-                    }
-                    do_action( 'badgeos_general_settings_fields', $badgeos_settings ); ?>
+                    <?php do_action( 'badgeos_general_settings_fields', $badgeos_settings ); ?>
                 </tbody>
             </table>
             <input type="submit" name="badgeos_settings_update_btn" class="button button-primary" value="<?php _e( 'Save Settings', 'badgeos' ); ?>">
@@ -212,6 +212,55 @@
             </table>
             <input type="submit" name="badgeos_settings_update_btn" class="button button-primary" value="<?php _e( 'Save Settings', 'badgeos' ); ?>">
         </div>
+        <?php 
+            if ( is_super_admin() ){
+                if ( is_multisite() ) { ?>
+                <div id="badgeos_settings_multisite_settings">
+                    <table cellspacing="0">
+                        <tbody>
+                            <tr valign="top">
+                                <th scope="row"><label for="ms_show_all_achievements"><?php _e( 'Show achievements earned across all sites:', 'badgeos' ); ?></label></th>
+                                <td>
+                                    <select id="ms_show_all_achievements" name="badgeos_settings[ms_show_all_achievements]">
+                                        <option value="disabled" <?php selected( $ms_show_all_achievements, 'disabled' ); ?>><?php _e( 'Disabled', 'badgeos' ) ?></option>
+                                        <option value="enabled" <?php selected( $ms_show_all_achievements, 'enabled' ); ?>><?php _e( 'Enabled', 'badgeos' ) ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row"><label for="ms_show_all_ranks"><?php _e( 'Show ranks earned across all sites:', 'badgeos' ); ?></label></th>
+                                <td>
+                                    <select id="ms_show_all_ranks" name="badgeos_settings[ms_show_all_ranks]">
+                                        <option value="disabled" <?php selected( $ms_show_all_ranks, 'disabled' ); ?>><?php _e( 'Disabled', 'badgeos' ) ?></option>
+                                        <option value="enabled" <?php selected( $ms_show_all_ranks, 'enabled' ); ?>><?php _e( 'Enabled', 'badgeos' ) ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row"><label for="ms_show_all_points"><?php _e( 'Show points earned across all sites:', 'badgeos' ); ?></label></th>
+                                <td>
+                                    <select id="ms_show_all_points" name="badgeos_settings[ms_show_all_points]">
+                                        <option value="disabled" <?php selected( $ms_show_all_points, 'disabled' ); ?>><?php _e( 'Disabled', 'badgeos' ) ?></option>
+                                        <option value="enabled" <?php selected( $ms_show_all_points, 'enabled' ); ?>><?php _e( 'Enabled', 'badgeos' ) ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row"><label for="ms_show_all_settings"><?php _e( 'Same BadgeOS settings across all sites:', 'badgeos' ); ?></label></th>
+                                <td>
+                                    <select id="ms_show_all_settings" name="badgeos_settings[ms_show_all_settings]">
+                                        <option value="disabled" <?php selected( $ms_show_all_settings, 'disabled' ); ?>><?php _e( 'Disabled', 'badgeos' ) ?></option>
+                                        <option value="enabled" <?php selected( $ms_show_all_settings, 'enabled' ); ?>><?php _e( 'Enabled', 'badgeos' ) ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <?php do_action( 'badgeos_general_settings_multisite_fields', $badgeos_settings ); ?>
+                        </tbody>
+                    </table>
+                    <input type="submit" name="badgeos_settings_update_btn" class="button button-primary" value="<?php _e( 'Save Settings', 'badgeos' ); ?>">
+                </div>
+            <?php } ?>
+        <?php } ?>
         <?php if( ! empty( $addon_contents ) ) { ?>
             <div id="badgeos_settings_addon_settings">
                 <table cellspacing="0">
