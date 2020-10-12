@@ -114,3 +114,15 @@
 .credly-wrap .success {
 	color: green;
 }
+/*Single widgets ranks, points */
+.badgeos-user-ranks-only .widget-ranks-listing {
+	list-style: none;
+    margin: 0px;
+    padding: 10px;
+}
+.badgeos-user-ranks-only .widget-badgeos-item-title{
+	margin-left: 1em;
+}
+.badgeos_earned_points_only td {
+	text-align: center;
+}
