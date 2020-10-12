@@ -129,6 +129,18 @@ ul.badgeos-achievement-earners-list li {
 	position: relative;
 }
 
+/*Single widgets ranks, points */
+.badgeos-user-ranks-only .widget-ranks-listing {
+	list-style: none;
+    margin: 0px;
+    padding: 10px;
+}
+.badgeos-user-ranks-only .widget-badgeos-item-title{
+	margin-left: 1em;
+}
+.badgeos_earned_points_only td {
+	text-align: center;
+}
 .badgeos_earned_point_main .badgeos_earned_point_title {
 	margin: 0;
 	color: black;
